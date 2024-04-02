@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox
   config.vm.define "ansible_awx" do |ansible_awx|
-    ansible_awx.vm.box = "koalephant/debian10"
+    ansible_awx.vm.box = "generic/ubuntu2204"
     ansible_awx.vm.hostname = "ansible-awx.local"
     ansible_awx.vm.network "private_network", ip: "10.100.1.10"
     ansible_awx.vm.network "forwarded_port", guest: 8043, host: 10004
@@ -9,11 +9,11 @@ Vagrant.configure("2") do |config|
       x.customize ["modifyvm", :id, "--ioapic", "on"]
       x.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       x.name = "ansible-awx"
-      x.memory = 4096
-      x.cpus = 4
+      x.memory = 6144
+      x.cpus = 6
     end
     ansible_awx.vm.synced_folder "./ansible_resources", "/home/vagrant/ansible_resources"
-    ansible_awx.vm.provision "shell", path: "./provisioning/setup2.sh"
+    ansible_awx.vm.provision "shell", path: "./provisioning/setup_awx_minikube.sh"
   end
   ips = ["10.100.1.20", "10.100.1.30", "10.100.1.40"]
   (1..3).each do |i|
