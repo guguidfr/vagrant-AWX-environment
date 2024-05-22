@@ -13,7 +13,8 @@ Vagrant.configure("2") do |config|
       x.cpus = 6
     end
     ansible_awx.vm.synced_folder "./ansible_resources", "/home/vagrant/ansible_resources"
-    ansible_awx.vm.provision "shell", path: "./provisioning/setup_awx_minikube.sh"
+    # ansible_awx.vm.provision "shell", path: "./provisioning/setup_awx_minikube.sh"
+    ansible_awx.vm.provision "shell", path: "./provisioning/dependencies_installation.sh"
   end
   ips = ["10.100.1.20", "10.100.1.30", "10.100.1.40"]
   (1..3).each do |i|
