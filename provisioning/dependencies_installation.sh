@@ -13,6 +13,7 @@ python -m pip install --upgrade pip
 
 # Instalar Ansible con pip
 pip install ansible
+echo "export PATH=~/.local/bin:$PATH" >> ~/.bashrc
 
 # Instalar n para gestionar versiones de Node.js y npm
 sudo apt install -y curl
@@ -34,6 +35,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo usermod -aG docker vagrant
 
 # Instalar Docker Compose
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
