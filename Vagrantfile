@@ -13,11 +13,17 @@ Vagrant.configure("2") do |config|
       x.cpus = 6
     end
     ansible_awx.vm.synced_folder "./ansible_resources", "/home/vagrant/ansible_resources"
-    # ansible_awx.vm.provision "shell", path: "./provisioning/dependencies_installation.sh"
-    # ansible_awx.vm.provision "shell", path: "./provisioning/awx_setup.sh", privileged: false
+    ansible_awx.vm.provision "shell", path: "./provisioning/dependencies_installation.sh", privileged: true
+    ansible_awx.vm.provision "shell", path: "./provisioning/awx_clone.sh", privileged: false
+    # ---------------------------------------------------------------------
+    puts "Cada vez que enciendas la máquina, necesitarás recrear los contenedores de AWX."
+    sleep (1)
+    puts "En la carpeta 'ansible_resources' del directorio 'home' tienes el script necesario para ello."
+    sleep (2)
+    # ----------------------------------------------------------------------
   end
   ips = ["10.100.1.20", "10.100.1.30", "10.100.1.40"]
-  (1..1).each do |i|
+  (1..3).each do |i|
     config.vm.define "minion-#{i}" do |minion|
       minion.vm.box = "koalephant/debian10"
       minion.vm.network "private_network", ip: ips[i-1]
@@ -26,6 +32,7 @@ Vagrant.configure("2") do |config|
         m.memory = 512
         m.cpus = 1
       end
+      minion.vm.provision "shell", path: "./provisioning/ssh_access.sh", privileged: false
     end
   end
 end
